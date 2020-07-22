@@ -129,7 +129,6 @@ class OrderController extends Controller
         }
         else{
             return response()->json([
-                'data' => null,
                 'message' => 'Order ID not found',
                 'status' => false
                 ]);

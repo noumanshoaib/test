@@ -76,7 +76,7 @@ class orderController extends Controller
         Mail::to($email)->send(new OrderConfirmation($order));
        
         return response()->json([
-            'data' => null,
+            'data' => $order,
             'status' => true,
             'message'=>'Your order has been placed Successfully',
             ]);

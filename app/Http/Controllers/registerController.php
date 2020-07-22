@@ -65,7 +65,11 @@ class registerController extends Controller
             $user = User::where('email',$email)->first();
             if($user)
             {
-                return ['message'=>'The User Already Exist','status' => false];
+                
+                response()->json([
+                    'message' => 'User Already Exits',
+                    'status' => false
+                    ]);
             }
             else{
                 $user = new User();
@@ -75,7 +79,11 @@ class registerController extends Controller
                 $user->phone = $phone;
                 $user->token = $token;
                 $user->save();
-                return ['message'=>'your account has been registered','status' => true];
+                
+                response()->json([
+                    'message' => 'your account has been registered',
+                    'status' => true
+                    ]);
             }
 
 
@@ -83,9 +91,14 @@ class registerController extends Controller
         }
         catch(\Exception $e)
         {
-            $data['status'] = false;
-            $data['error'] = $e->getMessage();
-            return $data;
+            
+            
+
+            return response()->json([
+                'data' => array('error',$e->getMessage()),
+                'message'=> 'something is wrong',
+                'status' => false
+                ]);
         }
 
 
