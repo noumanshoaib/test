@@ -15,4 +15,9 @@ class order extends Model
     {
         return $this->belongsTo(User::class,'user_id');
     }
+
+    public function getStatusAttribute($key)
+    {
+        return $key == 1? 'In Progress': ($key == 2? 'Shipped':($key == 3? 'completed':'cancelled'));
+    }
 }

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\admin;
 use Illuminate\Support\Facades\Hash;
+use Validator;
 class LoginController extends Controller
 {
     /**
@@ -36,11 +37,25 @@ class LoginController extends Controller
      */
     public function store(Request $request)
     {
-        $email = $request->username;
+        $validator = Validator::make($request->all(), [
+            'password' => ['required'],
+             'email' => ['required'],
+           
+        ]);
+        
+         
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => "Something's Went Wrong!",
+                "required_parametres" => $validator->errors()
+            ]);
+            
+        }
+        $email = $request->email;
         $password = $request->password;
 
-        $admin = admin::where('email',$email)->first();
-
+         $admin = admin::where('username',$email)->first();
         if(!$admin)
         {
            

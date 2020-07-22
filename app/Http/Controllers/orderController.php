@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\order;
 use App\User;
+use Validator;
 class orderController extends Controller
 {
 
@@ -19,7 +20,11 @@ class orderController extends Controller
      */
     public function index(Request $request)
     {
-        return $request->user->order()->With('product')->get();
+        return response()->json([
+            'data' => $request->user->order()->With('product')->get(),
+            'status' => true
+            ]);
+
     }
 
     /**
@@ -40,6 +45,21 @@ class orderController extends Controller
      */
     public function store(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'product_id' => ['required'],
+             'address' => ['required'],
+           
+        ]);
+        
+         
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => "Something's Went Wrong!",
+                "required_parametres" => $validator->errors()
+            ]);
+            
+        }
         
         $product_id = $request->product_id;
         $order = new order();
@@ -47,7 +67,12 @@ class orderController extends Controller
         $order->address = $request->address;
         $order->user_id = $request->user->id;
         $order->save();
-        return ['message'=>'Your order has been placed Successfully','status'=>true];
+       
+        return response()->json([
+            'data' => null,
+            'status' => true,
+            'message'=>'Your order has been placed Successfully',
+            ]);
     }
 
     /**

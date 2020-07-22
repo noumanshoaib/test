@@ -26,5 +26,7 @@ Route::apiResource('order','orderController');
 
 Route::group(['prefix' => 'admin'],function(){
     Route::apiResource('user','Admin\UserController');
+    Route::apiResource('login','Admin\LoginController');
     Route::apiResource('order','Admin\OrderController');
+    Route::apiResource('product','Admin\ProductController');
 });

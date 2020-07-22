@@ -1,13 +1,17 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
+use App\product;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use App\User;
 use Validator;
-class loginController extends Controller
+class ProductController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('adminAuth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +19,7 @@ class loginController extends Controller
      */
     public function index()
     {
-        return view('login');
+        
     }
 
     /**
@@ -37,8 +41,11 @@ class loginController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'password' => ['required'],
-             'email' => ['required'],
+            'name' => ['required'],
+             'category' => ['required'],
+             'price' => ['required'],
+             'description' => ['required'],
+             'image' => 'required|max:10000|mimes:png,jpeg'
            
         ]);
         
@@ -49,36 +56,36 @@ class loginController extends Controller
                 'message' => "Something's Went Wrong!",
                 "required_parametres" => $validator->errors()
             ]);
-            
         }
-        $email = $request->email;
-        $password = $request->password;
+        $name = $request->name;
+        $category = $request->category;
+        $price = $request->price;
+        $description = $request->description;
 
-        $user = User::where('email',$email)->first();
+        $uploadedFile = $request->file('image'); 
 
-        if(!$user)
-        {
-            return response()->json([
-                'status' => false,
-                'message' => 'Username or password is invalid',
-            ]);
+        $fileName = uniqid().$uploadedFile->getClientOriginalName();
+
+        if ($uploadedFile->isValid()) {
+            $uploadedFile->move(public_path('/images'), $fileName);
         }
 
-        if (Hash::check($password, $user->password)) {
+        
 
+        $product = new product();
+        $product->name = $name;
+        $product->price = $price;
+        $product->description = $description;
+        $product->category = $category;
+        $product->image = $fileName;
+        $product->save();
 
-            return response()->json([
-                'status' => true,
-                'data' => array('token' => $user->token),
-                'message' => 'Successfully Authenticated',
-            ]);
-        }
 
         return response()->json([
-            'status' => false,
-            'message' => 'Username or password is invalid',
+            'status' => true,
+            'message' => "product successfully created",
+            'data' => $product
         ]);
-
 
     }
 

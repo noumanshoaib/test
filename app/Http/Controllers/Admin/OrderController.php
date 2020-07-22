@@ -21,7 +21,11 @@ class OrderController extends Controller
      */
     public function index()
     {
-        return order::with(['product','user'])->get();
+      
+        return response()->json([
+            'data' => order::with(['product','user'])->get(),
+            'status' => true
+            ]);
     }
 
 

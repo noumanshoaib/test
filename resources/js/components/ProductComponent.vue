@@ -5,10 +5,10 @@
 
           <div v-for="(item, index) in products" :key="index" class="col-lg-4 col-md-6 mb-4">
             <div class="card h-100">
-              <a href="#"><img class="card-img-top" :src="'images/'+item.photo" alt=""></a>
+              <a href="#"><img class="card-img-top" :src="'images/'+item.image" alt=""></a>
               <div  class="card-body">
                 <h4 class="card-title">
-                  <a v-on:click="changeIndex(index)" data-toggle="modal" data-target="#exampleModalLong" href="/cart">{{item.name}}</a>
+                  <a v-on:click="changeIndex(index)" data-toggle="modal" data-target="#exampleModalLong" href="#">{{item.name}}</a>
                 </h4>
                 <h5>AED {{item.price}}</h5>
                 <p class="card-text">{{item.description}}</p>
@@ -35,7 +35,7 @@
 
 <div class="">
             <div class="card h-100">
-              <a href="#"><img class="card-img-top" :src="'images/'+modelProduct[displayIndex].photo" alt=""></a>
+              <a href="#"><img class="card-img-top" :src="'images/'+modelProduct[displayIndex].image" alt=""></a>
               <div  class="card-body">
                 <h4 class="card-title">
                   <a  href="#">{{modelProduct[displayIndex].name}}</a>
@@ -75,7 +75,7 @@ export default {
            modelProduct: [
                 { id: '',
                 name: '',
-                photo: '',
+                image: '',
                 description: '',
                 },
            ],

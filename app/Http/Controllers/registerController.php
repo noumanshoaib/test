@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\User;
 use Illuminate\Support\Str;
+use Validator;
 class registerController extends Controller
 {
     /**
@@ -38,6 +39,23 @@ class registerController extends Controller
     {
         try
         {
+            $validator = Validator::make($request->all(), [
+                'name' => ['required'],
+                 'email' => ['required'],
+                 'password' => 'required',
+                 'phone' => 'required',
+               
+            ]);
+            
+             
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => "Something's Went Wrong!",
+                    "required_parametres" => $validator->errors()
+                ]);
+                
+            }
             $name = $request->name;
             $email = $request->email;
             $password = bcrypt($request->password);
