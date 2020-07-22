@@ -66,7 +66,7 @@ class registerController extends Controller
             if($user)
             {
                 
-                response()->json([
+               return response()->json([
                     'message' => 'User Already Exits',
                     'status' => false
                     ]);
@@ -80,7 +80,7 @@ class registerController extends Controller
                 $user->token = $token;
                 $user->save();
                 
-                response()->json([
+               return response()->json([
                     'message' => 'your account has been registered',
                     'status' => true
                     ]);
