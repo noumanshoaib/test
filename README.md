@@ -31,7 +31,7 @@ php artisan config:cache
 
 to run above commands php must be installed on your system.
 
-* Now you have to make a copy of .env.example to .env and fill the database credentials.
+* Now you have to make a copy of .env.example to .env and fill the database credentials. after that generate your key, php artisan key:generate
 
 * run the following command now:
 
