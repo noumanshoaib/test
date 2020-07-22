@@ -2209,6 +2209,14 @@ __webpack_require__.r(__webpack_exports__);
                   showConfirmButton: false,
                   timer: 2000
                 });
+              } else {
+                swal.fire({
+                  position: 'top-end',
+                  icon: 'error',
+                  title: data.message,
+                  showConfirmButton: false,
+                  timer: 2000
+                });
               }
             });
           },

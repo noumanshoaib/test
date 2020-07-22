@@ -47,6 +47,7 @@ class orderController extends Controller
      */
     public function store(Request $request)
     {
+        try{
         $validator = Validator::make($request->all(), [
             'product_id' => ['required'],
              'address' => ['required'],
@@ -80,6 +81,15 @@ class orderController extends Controller
             'status' => true,
             'message'=>'Your order has been placed Successfully',
             ]);
+        }
+        catch(\Exception $e)
+        {
+            return response()->json([
+                'data' => array('error'=>$e->getMessage()),
+                'message'=> 'something is wrong',
+                'status' => false
+                ]);
+        }
     }
 
     /**

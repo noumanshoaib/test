@@ -95,7 +95,7 @@ class registerController extends Controller
             
 
             return response()->json([
-                'data' => array('error',$e->getMessage()),
+                'data' => array('error'=>$e->getMessage()),
                 'message'=> 'something is wrong',
                 'status' => false
                 ]);

@@ -15,11 +15,23 @@ class productController extends Controller
      */
     public function index()
     {
-
+        try{
         return response()->json([
             'data' => product::all(),
             'status' => true
             ]);
+        }
+        catch(\Exception $e)
+        {
+            
+            
+
+            return response()->json([
+                'data' => array('error'=>$e->getMessage()),
+                'message'=> 'something is wrong',
+                'status' => false
+                ]);
+        }
     }
 
     /**

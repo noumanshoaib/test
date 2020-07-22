@@ -37,6 +37,7 @@ class LoginController extends Controller
      */
     public function store(Request $request)
     {
+        try{
         $validator = Validator::make($request->all(), [
             'password' => ['required'],
              'email' => ['required'],
@@ -77,6 +78,16 @@ class LoginController extends Controller
             'status' => false,
             'message' => 'Username or password is invalid',
         ]);
+         }
+         catch(\Exception $e)
+        {
+            
+            return response()->json([
+                'data' => array('error'=>$e->getMessage()),
+                'message'=> 'something is wrong',
+                'status' => false
+                ]);
+        }
     }
 
     /**

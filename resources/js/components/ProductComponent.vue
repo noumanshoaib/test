@@ -145,6 +145,15 @@ const requestOptions = {
 
 
             }
+            else{
+              swal.fire({
+                    position: 'top-end',
+                    icon: 'error',
+                    title: data.message,
+                    showConfirmButton: false,
+                    timer: 2000
+                    });
+            }
         });
   },
   allowOutsideClick: () => !swal.isLoading()

@@ -43,6 +43,7 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        try{
         $validator = Validator::make($request->all(), [
             'name' => ['required'],
              'category' => ['required'],
@@ -89,6 +90,18 @@ class ProductController extends Controller
             'message' => "product successfully created",
             'data' => $product
         ]);
+        }
+        catch(\Exception $e)
+        {
+            
+            
+
+            return response()->json([
+                'data' => array('error'=>$e->getMessage()),
+                'message'=> 'something is wrong',
+                'status' => false
+                ]);
+        }
 
     }
 

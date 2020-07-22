@@ -60,10 +60,23 @@ class OrderController extends Controller
      */
     public function show($id)
     {
+        try{
         return response()->json([
             'data' => order::find($id)->with(['product','user'])->first(),
             'status' => true
             ]);
+        }
+        catch(\Exception $e)
+        {
+            
+            
+
+            return response()->json([
+                'data' => array('error'=>$e->getMessage()),
+                'message'=> 'something is wrong',
+                'status' => false
+                ]);
+        }
     }
 
     /**
@@ -103,6 +116,7 @@ class OrderController extends Controller
     public function updateStatus(Request $request)
     {
     
+        try{
         $validator = Validator::make($request->all(), [
             'status' => ['required'],
             'order_id' => 'required',
@@ -139,5 +153,15 @@ class OrderController extends Controller
             'message' => 'Successfully updated',
             'status' => true
             ]);
+        }
+        catch(\Exception $e)
+        {
+
+            return response()->json([
+                'data' => array('error'=>$e->getMessage()),
+                'message'=> 'something is wrong',
+                'status' => false
+                ]);
+        }
     }
 }
