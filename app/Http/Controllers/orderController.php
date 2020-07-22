@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\OrderConfirmation;
 use Illuminate\Http\Request;
 use App\order;
 use App\User;
 use Validator;
+use Illuminate\Support\Facades\Mail;
 class orderController extends Controller
 {
 
@@ -67,6 +69,11 @@ class orderController extends Controller
         $order->address = $request->address;
         $order->user_id = $request->user->id;
         $order->save();
+
+        $email = $request->user->email;
+        
+
+        Mail::to($email)->send(new OrderConfirmation($order));
        
         return response()->json([
             'data' => null,

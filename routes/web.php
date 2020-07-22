@@ -17,10 +17,3 @@ Route::get('/', 'homeController@index');
 
 Route::get('/register', 'registerController@index')->name('register');
 Route::get('/login', 'loginController@index')->name('login');
-
-
-use Illuminate\Support\Str;
-Route::get('/test',function(){
-
-   return bcrypt('admin');
-});

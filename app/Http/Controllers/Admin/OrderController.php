@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\order;
 use Illuminate\Http\Request;
-
+use Validator;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\OrderStatusUpdate;
 class OrderController extends Controller
 {
     public function __construct()
@@ -58,7 +60,10 @@ class OrderController extends Controller
      */
     public function show($id)
     {
-        //
+        return response()->json([
+            'data' => order::find($id)->with(['product','user'])->first(),
+            'status' => true
+            ]);
     }
 
     /**
@@ -93,5 +98,47 @@ class OrderController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function updateStatus(Request $request)
+    {
+    
+        $validator = Validator::make($request->all(), [
+            'status' => ['required'],
+            'order_id' => 'required',
+
+        ]);
+        
+         
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => "Something's Went Wrong!",
+                "required_parametres" => $validator->errors()
+            ]);
+        }
+        $status = $request->status;
+        $id = $request->order_id;
+
+        $order = order::where('id',$id)->with('user')->first();
+        if($order)
+        {
+            $order->status = $status;
+            $order->save();
+            Mail::to($order->user->email)->send(new OrderStatusUpdate($order));
+        }
+        else{
+            return response()->json([
+                'data' => null,
+                'message' => 'Order ID not found',
+                'status' => false
+                ]);
+        }
+
+        return response()->json([
+            'data' => $order,
+            'message' => 'Successfully updated',
+            'status' => true
+            ]);
     }
 }
